@@ -13,7 +13,7 @@ SECRET_KEY = 'django-insecure-2b2tn!n#5t6a@6zz#fd43r*l9qf=c3t*_p_1o=n9p7mq@&1%g&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.vercel.app', '127.0.0.1']
+ALLOWED_HOSTS = ['.vercel.app', '127.0.0.1', 'https://gennotate-backend.vercel.app']
 
 # Application definition
 
