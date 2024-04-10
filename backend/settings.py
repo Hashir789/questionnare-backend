@@ -1,5 +1,8 @@
 from pathlib import Path
 import dj_database_url
+import cloudinary
+import cloudinary.api
+import cloudinary.uploader
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -121,3 +124,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+cloudinary.config(
+    cloud_name="dnmy80tpe",
+    api_key="129158289711455",
+    api_secret="P-sbSnwtedxRVTRc1zWvdHActt8"
+)
