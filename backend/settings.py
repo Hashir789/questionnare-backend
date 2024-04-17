@@ -34,7 +34,8 @@ INSTALLED_APPS = [
     'gennotate',
 ]
 
-CORS_ALLOWED_ORIGINS = ['http://localhost:5173']
+CORS_ALLOWED_ORIGINS = [ 'https://questionnare-frontend.vercel.app' ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
