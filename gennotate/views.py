@@ -197,6 +197,86 @@ def signup(request):
 def test_token(request):
     return Response(request.user.username)
 @api_view(['POST'])
+def createImage(request):
+    userr = request.data.get('user')  # Assuming user_id is passed in the request
+    user = User.objects.get(id=userr)  # Assuming you have a User model
+    images_data = []
+    image_urls = [
+        "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297413/c8tx348nnvtgddl1izwi.jpg",
+        "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297414/pi3sluai0jtlvdalvmej.jpg",
+        "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297415/rgy8amqb9ylxbyxzusnu.jpg",
+        "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297415/ofonkw7hxz6r8m3hl4ys.jpg",
+        "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297416/fd2qjasmar4w59pxjrab.jpg",
+        "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297417/ozov0yailazhqxuoyozc.jpg",
+        "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297417/azkxr4ywmubewtpbfmil.jpg",
+        "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297418/s52zuobblfxyadc5cd1e.jpg",
+        "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297419/uw5qhbbnmw9q6ryybm9x.jpg",
+        "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297419/vs3qfqerqnwcfykwsd0r.jpg",
+        "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297420/gmhge8iyvettv4qsj0cp.jpg",
+        "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297421/omadqkkcw78ltf4jm4il.jpg",
+        "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297421/rx9abex9i8nukq3t42hz.jpg",
+        "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297422/qn74kkynngv996atewmz.jpg",
+        "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297423/uul6djfsgxskblhrat61.jpg",
+        "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297423/sp9m1vetvtoyhkwytgxz.jpg",
+        "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297424/ueo5w41om1ypk7jhx3hz.jpg",
+        "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297425/j8vzjcub3n3va3gs5pvu.jpg",
+        "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297426/y6sozredrlijf9jbrhe2.jpg",
+        "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297427/oyurfqckedpslzrpcx64.jpg"
+    ]
+    for url in image_urls:
+        image = Image.objects.create(
+            user=user,
+            urll=url,
+            type=1,  # Assuming type is always 0
+            generated=0,  # Assuming generated is always 1
+            question1=None,  # Set other question fields as needed
+            question2=None,
+            question3=None,
+            question4=None,
+            grade=0
+        )
+        image.save()
+        image_serializer = ImageSerializer(image)
+        images_data.append(image_serializer.data)
+    image_urls = [
+        "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297515/hpdtmmzvd4qr6uyyad19.jpg",
+        "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297516/btmt4zrubwv6y9pzla0n.jpg",
+        "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297517/te2lxqlbc7xe9vdsw8uo.jpg",
+        "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297517/xidrjqldcdtqcgk5tz2d.jpg",
+        "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297518/uum01amdwjatddiadlcy.jpg",
+        "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297519/bipquhlcpxwtssllf3dj.jpg",
+        "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297520/o5xrn96azfhxn2twtude.jpg",
+        "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297520/oi2itoqqpmxtvnhoywip.jpg",
+        "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297521/k7gb4syzinmjri19dzic.jpg",
+        "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297522/kay76hpckkrcktw289lw.jpg",
+        "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297523/a9bvhtq2hdjkldqpgug9.jpg",
+        "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297523/s0m4lpu5xifkdhjswkkn.jpg",
+        "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297524/ncw3dzofjduhtxvpqozt.jpg",
+        "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297525/kvidj9or8j0dxbhf0i8y.jpg",
+        "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297526/pklf3ehraiezljb92q7k.jpg",
+        "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297528/ee9sefdkpqf9f0o3zwas.jpg",
+        "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297529/zbgjwijat54ivzaakqea.jpg",
+        "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297529/q4maklr2cwqt2rmqhcgx.jpg",
+        "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297530/phlpmlmdggad4iqkv63m.jpg",
+        "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297531/acmtvsn9j9i0115ffn0x.jpg"
+    ]
+    for url in image_urls:
+        image = Image.objects.create(
+            user=user,
+            urll=url,
+            type=0,  # Assuming type is always 0
+            generated=0,  # Assuming generated is always 1
+            question1=None,  # Set other question fields as needed
+            question2=None,
+            question3=None,
+            question4=None,
+            grade=0
+        )
+        image.save()
+        image_serializer = ImageSerializer(image)
+        images_data.append(image_serializer.data)
+    return Response({'user': user, 'images': images_data }, status=status.HTTP_201_CREATED)
+@api_view(['POST'])
 def userImages(request):
     if 'user_id' not in request.data:
         return Response({'error': 'User ID is required'}, status=status.HTTP_400_BAD_REQUEST)

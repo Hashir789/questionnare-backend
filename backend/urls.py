@@ -13,5 +13,6 @@ urlpatterns = [
     re_path('api/login/', views.login, name='login'),
     path('userImages/', views.userImages, name='UserImages'),
     path('updateImage/', views.updateImage, name='updateImage'),
+    path('createImage/', views.createImage, name='createImage'),
     path('', hello_world, name='main_page'),
 ]
