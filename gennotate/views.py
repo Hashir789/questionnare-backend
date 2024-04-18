@@ -189,7 +189,7 @@ def signup(request):
         #     image.save()
         #     image_serializer = ImageSerializer(image)
         #     images_data.append(image_serializer.data)
-        return Response({'token': token.key, 'user': serializer.data }, status=status.HTTP_201_CREATED)
+        return Response({'token': token.key, 'user': serializer.data, 'images': images_data }, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication, TokenAuthentication])
