@@ -126,7 +126,7 @@ def test_token(request):
 def createImage(request):
     try:
         userr = request.data.get('user')  # Assuming user_id is passed in the request
-        user = User.objects.get(id=userr)  # Assuming you have a User model
+        # user = User.objects.get(id=userr)  # Assuming you have a User model
         # images_data = []
         # image_urls = [
         #     "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297413/c8tx348nnvtgddl1izwi.jpg",
@@ -202,7 +202,7 @@ def createImage(request):
         #     image.save()
         #     image_serializer = ImageSerializer(image)
         #     images_data.append(image_serializer.data)
-        return Response({'user': user }, status=status.HTTP_201_CREATED)
+        return Response({'user': userr }, status=status.HTTP_201_CREATED)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 @api_view(['POST'])
