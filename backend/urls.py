@@ -14,5 +14,6 @@ urlpatterns = [
     path('userImages/', views.userImages, name='UserImages'),
     path('updateImage/', views.updateImage, name='updateImage'),
     path('createImage/', views.createImage, name='createImage'),
+    path('stats/', views.stats, name='stats'),
     path('', hello_world, name='main_page'),
 ]

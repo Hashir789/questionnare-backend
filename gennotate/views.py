@@ -234,3 +234,26 @@ def updateImage(request):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+@api_view(['GET'])
+def stats(request):
+    op1 = Image.objects.filter(question1=1).count()
+    op2 = Image.objects.filter(question1=2).count()
+    op3 = Image.objects.filter(question1=3).count()
+    op4 = Image.objects.filter(question1=4).count()
+    op5 = Image.objects.filter(question1=5).count()
+    q1 = [op1, op2, op3, op4, op5]
+    op1 = Image.objects.filter(question2=1).count()
+    op2 = Image.objects.filter(question2=2).count()
+    q2 = [op1, op2]
+    op1 = Image.objects.filter(question3=1).count()
+    op2 = Image.objects.filter(question3=2).count()
+    op3 = Image.objects.filter(question3=3).count()
+    op4 = Image.objects.filter(question3=4).count()
+    op5 = Image.objects.filter(question3=5).count()
+    q3 = [op1, op2, op3, op4, op5]
+    op1 = Image.objects.filter(question4=1).count()
+    op2 = Image.objects.filter(question4=2).count()
+    op3 = Image.objects.filter(question4=3).count()
+    op4 = Image.objects.filter(question4=4).count()
+    q4 = [op1, op2, op3, op4]
+    return Response({ "question1": q1, "question2": q2, "question3": q3, "question4": q4 })

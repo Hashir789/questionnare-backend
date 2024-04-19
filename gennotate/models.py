@@ -11,6 +11,7 @@ class Image(models.Model):
     question2 = models.IntegerField(null=True)
     question3 = models.IntegerField(null=True)
     question4 = models.IntegerField(null=True)
+    question5 = models.IntegerField(null=True)
     grade = models.BooleanField(default=0)
     def __str__(self):
         return f"Image #{self.id}"
