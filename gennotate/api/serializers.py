@@ -8,4 +8,4 @@ class UserSerializer(ModelSerializer):
 class ImageSerializer(ModelSerializer):
     class Meta:
         model = Image
-        fields = ['id', 'user', 'urll', 'type', 'generated', 'question1', 'question2', 'question3', 'question4', 'grade']
+        fields = ['id', 'user', 'urll', 'type', 'generated', 'question1', 'question2', 'question3', 'question4', 'question5', 'grade']
