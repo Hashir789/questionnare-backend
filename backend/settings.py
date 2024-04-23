@@ -82,8 +82,8 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # }
 DATABASES = {
     'default': dj_database_url.config(
-        # default='postgresql://postgres:XbfyZjIXfKBPiCTsYxhzZRTfweqasrlF@roundhouse.proxy.rlwy.net:27135/railway',
-        default='postgresql://postgres:AwyjgdoRJmsoeXdSIfrlVwamlrKNHbhH@roundhouse.proxy.rlwy.net:48193/railway',
+        default='postgresql://postgres:XbfyZjIXfKBPiCTsYxhzZRTfweqasrlF@roundhouse.proxy.rlwy.net:27135/railway',
+        # default='postgresql://postgres:AwyjgdoRJmsoeXdSIfrlVwamlrKNHbhH@roundhouse.proxy.rlwy.net:48193/railway',
         conn_max_age=600,
         ssl_require=not DEBUG
     )

@@ -11,8 +11,10 @@ from rest_framework.permissions import IsAuthenticated
 from .models import Image
 from .api.serializers import ImageSerializer
 import random
-from django.db.models.signals import post_save
-from django.dispatch import receiver
+# from django.db.models.signals import post_save
+# from django.dispatch import receiver
+# import csv
+# from django.http import HttpResponse
 @api_view(['POST'])
 def login(request):
     user = get_object_or_404(User, username=request.data['username'])
@@ -40,76 +42,111 @@ def signup(request):
         user.set_password(request.data['password'])
         user.save()
         token = Token.objects.create(user=user)
-        image_urls = [
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713296870/wfwqchnkidel2tmr1ukw.png",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713296871/wjmilcylzsc60lmmlqpe.png",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713296872/nkzskbp6ce637jivrf2o.png",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713296873/vcisszysmr8ujqzol96w.png",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713296874/wkylbleuor6vw3yndwbh.png",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713296875/yhq3n8kudojp6izee2bz.png",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713296876/y6wc9k0zun4jpvw6krlu.png",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713296877/fevsx3yg56j756gnu3lg.png",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713296878/svwzom0fydmhba0v1xrs.png",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713296879/xly0jhlwb5jfj5btvavn.png",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713296880/vhbieq8xtxmtzn6f6zyv.png",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713296880/mxiteqm1owkcjo6w2v7a.png",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713296881/sm3f9wfjtkevpaiekhyy.png",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713296882/qvjqrvle5l5rr72jqasn.png",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713296883/rj0dqmoqbqopn1urk1cs.png",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713296884/pkdawc7mtuxkxu2k7tud.png",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713296884/asdicjwlxdbi1y4bnafp.png",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713296885/o0azzwraptct1k56loc9.png",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713296886/nokhbttbxxbtihbs9wjg.png",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713296886/nrka5opffsxq5mcdoyat.png",
-        ]
         images_data = []
+        image_urls = [
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889094/ajx6juf4fquc5jnrqb4d.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889095/b5su61lbdpzjwh2tqqij.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889096/xelazmrqzeveqox6xxp8.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889097/fpafqzzyqarqyfe3g0tp.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889098/mvyvqx5knwaiwjqrp3op.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889098/kahuvezng1qibqxrsjij.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889099/htj0fiqz6ndc0nxerx49.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889101/rogikpczo5hrcqs30afp.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889102/qkrtbk35jcuqnl6himd5.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889103/rjvd7di3chzeofnot4aa.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889104/mbawwpxpyju7usgpznby.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889104/o5bxvntj0ohgnbfzhaaj.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889105/ks3zbsxguuoulv7rl3co.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889106/mspuq1hqqdnx23vdx12z.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889107/y8xhpyznn4rb2g3xzq0y.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889107/syxuknfastpzl0llmaex.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889108/tget9geb35l3rvunozeu.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889109/ezbbitih8rnudiolecmm.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889110/ikccputraynlmmfufjqf.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889111/s8smvvcolxmq0qne3vfq.jpg",
+
+        ]
         for url in image_urls:
             image = Image.objects.create(
                 user=user,
                 urll=url,
-                type=1,  # Assuming type is always 0
-                generated=1,  # Assuming generated is always 1
-                question1=None,  # Set other question fields as needed
+                type=1,
+                generated=1,
+                question1=None,
                 question2=None,
                 question3=None,
                 question4=None,
+                question5=None,
                 grade=0
             )
             image.save()
             image_serializer = ImageSerializer(image)
             images_data.append(image_serializer.data)
         image_urls = [
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297284/ajhb1pdkdbcagfxvcdnb.png",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297284/xcatf8xcuumsgizanzwi.png",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297285/uy5mthlfmpqrbvrqafhj.png",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297286/xwnlqajsyanzvtcmzw7m.png",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297287/mt4szya80ufoda27od0v.png",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297288/ytfyhgbvwfu1d0zgw4fi.png",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297288/inc0dotftkauazrrwotl.png",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297289/ddx3mthjjytgaebwaimu.png",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297290/dcjglwcgsyzjhzcn3ark.png",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297290/stcnclgyf7wjss7mihs7.png",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297291/fzlrpa6hwygmoxk3succ.png",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297292/xzq459zrwstbgcpja82e.png",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297293/vvee6pa7uzjf0d7swhea.png",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297293/hsclui8kfaezmabuqk0n.png",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297294/fcqzax0shqubxzthnox3.png",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297295/txzpafnkl3lceaqvm7ji.png",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297296/gptklxudua1kw0xc18zs.png",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297296/zeyhzb6pjzi4mjqvjek6.png",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297297/xng2wvmqk0uqczzflied.png",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297298/slgw3tvmglwblab4vvtt.png"
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889176/kqyfp2ylogmdxplqkr7d.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889177/lubhwjfem2cu2vjvpcvd.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889178/qcxd9cppjdyrkxcce06v.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889178/eqzdwnipu2uxxnrcgua9.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889179/gvj6j3xrhjctzi5shvzf.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889180/fcr5k09ycvcirhlsvaqn.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889181/vc6pprpzwxbnqk8qpzsf.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889182/et50pt8m2ckpzqotp1nz.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889182/sglyotfckubf7erjklts.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889183/zn89sybmz65csnkgq0u4.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889184/fnnaq4peijd5yk4sbymz.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889185/pvar4bev4c5scyigqg7u.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889186/zvzlowwe18iux53muuqn.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889187/dxqyxg2h31detguzdlxp.jpg",
         ]
         for url in image_urls:
             image = Image.objects.create(
                 user=user,
                 urll=url,
-                type=0,  # Assuming type is always 0
-                generated=1,  # Assuming generated is always 1
-                question1=None,  # Set other question fields as needed
+                type=2,
+                generated=0,
+                question1=None,
                 question2=None,
                 question3=None,
                 question4=None,
+                question5=None,
+                grade=0
+            )
+            image.save()
+            image_serializer = ImageSerializer(image)
+            images_data.append(image_serializer.data)
+        image_urls = [
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889231/d500g5lhomzx2cbv7w5a.png",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889232/q4i02nsi83jxfmhgktmk.png",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889233/z0vg7wuqfxxhwskcccpk.png",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889234/xqe1e4n7igl8k7l8wj0a.png",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889235/jimaapsxlumbmfjxwb5t.png",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889236/lv5uoixjuqtecojr7yfj.png",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889237/hw6zqonngjygjpplqb38.png",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889239/iwnhtln4v4wauwzle47h.png",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889240/fvf3mgqy2g5duc3wgblc.png",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889241/rzvgchifjecmauih7u9r.png",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889242/bhwgfgcavbybetdwrjys.png",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889242/yepdjxr5udvddiskiywu.png",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889243/gwt6j6azsequpm9goxx4.png",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889244/o78ra2xd7jdxwj7r7d7d.png",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889245/brqgkmzlbck4rcpex1bk.png",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889246/zjmwlxj1efoz5xklaowo.png",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889247/garkz3kaemw4t2odifop.png",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889249/rfwxknzuadjtcncrup05.png",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889249/ey0i9nrovj6mid8mqoao.png",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713889250/lcwzn25rcwjrx7orpsx9.png",
+        ]
+        for url in image_urls:
+            image = Image.objects.create(
+                user=user,
+                urll=url,
+                type=2,
+                generated=1,
+                question1=None,
+                question2=None,
+                question3=None,
+                question4=None,
+                question5=None,
                 grade=0
             )
             image.save()
@@ -129,63 +166,19 @@ def createImage(request):
         user = User.objects.get(id=user_id)
         images_data = []
         image_urls = [
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297413/c8tx348nnvtgddl1izwi.jpg",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297414/pi3sluai0jtlvdalvmej.jpg",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297415/rgy8amqb9ylxbyxzusnu.jpg",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297415/ofonkw7hxz6r8m3hl4ys.jpg",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297416/fd2qjasmar4w59pxjrab.jpg",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297417/ozov0yailazhqxuoyozc.jpg",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297417/azkxr4ywmubewtpbfmil.jpg",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297418/s52zuobblfxyadc5cd1e.jpg",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297419/uw5qhbbnmw9q6ryybm9x.jpg",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297419/vs3qfqerqnwcfykwsd0r.jpg",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297420/gmhge8iyvettv4qsj0cp.jpg",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297421/omadqkkcw78ltf4jm4il.jpg",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297421/rx9abex9i8nukq3t42hz.jpg",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297422/qn74kkynngv996atewmz.jpg",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297423/uul6djfsgxskblhrat61.jpg",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297423/sp9m1vetvtoyhkwytgxz.jpg",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297424/ueo5w41om1ypk7jhx3hz.jpg",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297425/j8vzjcub3n3va3gs5pvu.jpg",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297426/y6sozredrlijf9jbrhe2.jpg",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297427/oyurfqckedpslzrpcx64.jpg"
-        ]
-        for url in image_urls:
-            image = Image.objects.create(
-                user=user,
-                urll=url,
-                type=1,
-                generated=0,
-                question1=None,
-                question2=None,
-                question3=None,
-                question4=None,
-                grade=0
-            )
-            image.save()
-            image_serializer = ImageSerializer(image)
-            images_data.append(image_serializer.data)
-        image_urls = [
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297515/hpdtmmzvd4qr6uyyad19.jpg",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297516/btmt4zrubwv6y9pzla0n.jpg",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297517/te2lxqlbc7xe9vdsw8uo.jpg",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297517/xidrjqldcdtqcgk5tz2d.jpg",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297518/uum01amdwjatddiadlcy.jpg",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297519/bipquhlcpxwtssllf3dj.jpg",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297520/o5xrn96azfhxn2twtude.jpg",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297520/oi2itoqqpmxtvnhoywip.jpg",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297521/k7gb4syzinmjri19dzic.jpg",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297522/kay76hpckkrcktw289lw.jpg",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297523/a9bvhtq2hdjkldqpgug9.jpg",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297523/s0m4lpu5xifkdhjswkkn.jpg",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297524/ncw3dzofjduhtxvpqozt.jpg",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297525/kvidj9or8j0dxbhf0i8y.jpg",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297526/pklf3ehraiezljb92q7k.jpg",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297528/ee9sefdkpqf9f0o3zwas.jpg",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297529/zbgjwijat54ivzaakqea.jpg",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297529/q4maklr2cwqt2rmqhcgx.jpg",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297530/phlpmlmdggad4iqkv63m.jpg",
-            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713297531/acmtvsn9j9i0115ffn0x.jpg"
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888780/ge8rmbrks035pfyjlnwz.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888781/ihlvhmxg6rwrfcj82i7n.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888782/frmuqdvv1eh3lufgo3c4.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888783/bok3ftzlj22fpshlnxja.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888783/ezhmtvtfynftss9ofdg0.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888784/bavrdqu9hxrx8mib218n.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888785/xgvdaghav73wrfmgx8mb.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888786/afe5xppk8aajevxyxks3.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888786/xw9bf3ot75d4ulfctr3o.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888787/xfcaanqn54t3kjxo1ir1.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888788/upaearsaegh0qlsfwy4s.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888789/yupiq0u2pcq2nhxnjcfr.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888790/kalchynkq6j7ud1supmo.jpg",
         ]
         for url in image_urls:
             image = Image.objects.create(
@@ -197,6 +190,76 @@ def createImage(request):
                 question2=None,
                 question3=None,
                 question4=None,
+                question5=None,
+                grade=0
+            )
+            image.save()
+            image_serializer = ImageSerializer(image)
+            images_data.append(image_serializer.data)
+        image_urls = [
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888853/hsnstayp6qno3aqjjt6i.png",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888854/gk8kd0m4tt3jlsiyn1a0.png",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888855/s79uehcqimpmxd4wdzqf.png",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888856/h6ou3l2yvrblhni8auoy.png",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888856/ewqw5juc6t8hkqpjvovd.png",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888857/vrwie7oriuijgcnz2jke.png",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888858/vxnde7daqtc3l3jfpgg0.png",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888859/aucdhpvs7itvdeydnghj.png",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888860/dzjnvhswsqtltojto1w9.png",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888861/tvnnl32llcraf5vstjny.png",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888862/rppoxhqfhollz15paaks.png",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888862/hwdteq58wgmwnayqqivw.png",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888863/fksqrvqctpzf9z4tw4wi.png",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888864/i4hyks3pjf7nwqnudcxo.png",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888865/jr1zyepvibr1ymhpra6v.png",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888866/q94hreyli4ly96elxqvr.png",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888867/pfurgvekxlvlcalesoev.png",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888868/pkl83orbvy9fggutu5ip.png",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888869/bonfwgvwb9ojqdrzzcxv.png",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888870/nrjlhnf5hlkhonylvsuy.png",            
+        ]
+        for url in image_urls:
+            image = Image.objects.create(
+                user=user,
+                urll=url,
+                type=0,
+                generated=1,
+                question1=None,
+                question2=None,
+                question3=None,
+                question4=None,
+                question5=None,
+                grade=0
+            )
+            image.save()
+            image_serializer = ImageSerializer(image)
+            images_data.append(image_serializer.data)
+        image_urls = [
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888931/ji5mnoshwspeusi7eotr.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888932/yc3qlob6ayhpffgkeipz.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888933/xhkl3tdah0x6aaaqkx3y.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888934/rpllsa2nzc5vqqtuegqu.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888935/p34jbfmjkjsq4nfivsmk.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888935/vh1dlmrlsdcfa57apxc9.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888936/ri1aipdjyl8ycinzjufg.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888937/lktpxumaotd4ygtfaicp.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888938/tw0rlahpbjwpzlrwnugk.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888938/ckhmlwiyxvpa7lorjtft.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888939/e2urxiurojbxnqljgdvv.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888940/f6edmftf6xvx9wdjp3qx.jpg",
+            "https://res.cloudinary.com/dnmy80tpe/image/upload/v1713888940/litv8jy99xbchbql1ork.jpg",
+        ]
+        for url in image_urls:
+            image = Image.objects.create(
+                user=user,
+                urll=url,
+                type=1,
+                generated=0,
+                question1=None,
+                question2=None,
+                question3=None,
+                question4=None,
+                question5=None,
                 grade=0
             )
             image.save()
@@ -257,3 +320,58 @@ def stats(request):
     op4 = Image.objects.filter(question4=4).count()
     q4 = [op1, op2, op3, op4]
     return Response({ "question1": q1, "question2": q2, "question3": q3, "question4": q4 })
+# @api_view(['GET'])
+# def printCSV(request):
+#     if request.method == 'GET':
+#         unique_urls = Image.objects.values_list('urll', flat=True).distinct()
+#         data = []
+#         for url in unique_urls:
+#             q1_option1_count = Image.objects.filter(question1=1, urll=url).count()
+#             q1_option2_count = Image.objects.filter(question1=2, urll=url).count()
+#             q1_option3_count = Image.objects.filter(question1=3, urll=url).count()
+#             q2_option1_count = Image.objects.filter(question2=1, urll=url).count()
+#             q2_option2_count = Image.objects.filter(question2=2, urll=url).count()
+#             q2_option3_count = Image.objects.filter(question2=3, urll=url).count()
+#             q3_option1_count = Image.objects.filter(question3=1, urll=url).count()
+#             q3_option2_count = Image.objects.filter(question3=2, urll=url).count()
+#             q3_option3_count = Image.objects.filter(question3=3, urll=url).count()
+#             q4_option1_count = Image.objects.filter(question4=1, urll=url).count()
+#             q4_option2_count = Image.objects.filter(question4=2, urll=url).count()
+#             q4_option3_count = Image.objects.filter(question4=3, urll=url).count()
+#             image_data = {
+#                 'q1_option1_count': q1_option1_count,
+#                 'q1_option2_count': q1_option2_count,
+#                 'q1_option3_count': q1_option3_count,
+#                 'q2_option1_count': q2_option1_count,
+#                 'q2_option2_count': q2_option2_count,
+#                 'q2_option3_count': q2_option3_count,
+#                 'q3_option1_count': q3_option1_count,
+#                 'q3_option2_count': q3_option2_count,
+#                 'q3_option3_count': q3_option3_count,
+#                 'q4_option1_count': q4_option1_count,
+#                 'q4_option2_count': q4_option2_count,
+#                 'q4_option3_count': q4_option3_count,
+#             }
+#             data.append(image_data)
+#         return Response(data)
+@api_view(['GET'])
+def printCSV(request):
+    if request.method == 'GET':
+        unique_urls = Image.objects.values_list('urll', flat=True).distinct()
+        data = []
+
+        questions = ['question1', 'question2', 'question3', 'question4']
+        options = [1, 2, 3]
+
+        for url in unique_urls:
+            image_data = {}
+
+            for question in questions:
+                for option in options:
+                    count = Image.objects.filter(**{question: option, 'urll': url}).count()
+                    key = f'{question}_option{option}_count'
+                    image_data[key] = count
+
+            data.append(image_data)
+
+        return Response(data)
